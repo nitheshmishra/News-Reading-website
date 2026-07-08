@@ -279,7 +279,7 @@
 
 
     <script>
-        const API_KEY = "3a46f517ef8048319d20012db6347842";
+        const API_KEY = "Enter-your-apikey-here";
      
         const proxyUrl = "https://api.allorigins.win/raw?url=";
         const url = "https://newsapi.org/v2/everything?q=";
