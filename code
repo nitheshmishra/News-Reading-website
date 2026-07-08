@@ -1,0 +1,422 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+
+
+
+        :root {
+            --primary-text-color: #0a0a0a;
+            --secondary-text-color: #0b80ec;
+            --accent-color: #2294ed;
+            --accent-color-dark: #1d69a3;
+        }
+
+
+
+
+        body {
+            font-family: "Poppins", sans-serif;
+            color: var(--primary-text-color);
+        }
+
+
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+
+
+        ul {
+            list-style: none;
+        }
+
+
+
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+
+
+
+        .container {
+            max-width: 1180px;
+            margin-inline: auto;
+            overflow: hidden;
+        }
+
+
+
+
+        nav {
+            background-color: black;
+            box-shadow: 0 0 4px rgb(243, 156, 156);
+            position: fixed;
+            top: 0;
+            z-index: 99;
+            left: 0;
+            right: 0;
+        }
+
+
+
+
+        .main-nav {
+            justify-content: space-between;
+            padding: 15px 0;
+        }
+
+
+
+
+        .company-logo img {
+            width: 100px;
+        }
+
+
+
+
+        .nav-links ul {
+            gap: 40px;
+            color:rgb(248, 3, 126);
+     
+        }
+
+
+
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+
+
+
+        .hover-link {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+
+
+
+        .hover-link:hover {
+            color: var(--accent-color);
+        }
+
+
+
+
+        .search-bar {
+            gap: 8px;
+        }
+
+
+
+
+        .news-input {
+            width: 200px;
+            height: 32px;
+            border-radius: 8px;
+            border: 2px solid #577592;
+            padding-inline: 12px;
+            font-family: "Poppins", sans-serif;
+        }
+
+
+
+
+        .search-button {
+            background-color: var(--accent-color);
+            color: rgb(1, 8, 2);
+            padding: 8px 24px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: "Poppins", sans-serif;
+        }
+
+
+
+
+        .search-button:hover {
+            background-color: var();
+        }
+
+
+
+
+        main {
+            padding-block: 20px;
+            margin-top: 80px;
+        }
+
+
+
+
+        .cards-container {
+            justify-content: space-between;
+            flex-wrap: wrap;
+            row-gap: 20px;
+            align-items: start;
+        }
+
+
+
+
+        .card {
+            width: 360px;
+            min-height: 400px;
+            box-shadow: 0 0 4px #020405;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #44f53e;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+
+
+
+        .card:hover {
+            box-shadow: 1px 1px 8px #d4ecff;
+            transform: translateY(-2px);
+            background-color: #06a7f8;
+        }
+
+
+
+
+        .card-header img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+
+
+
+        .card-content {
+            padding: 12px;
+        }
+
+
+
+
+        .news-source {
+            margin-block: 12px;
+            color:rgb(247, 62, 6);
+        }
+    </style>
+</head>
+<body>
+
+
+
+
+    <nav>
+        <div class="main-nav container flex">
+            <a href="#" onclick="reload()" class="company-logo">
+                <img src="C:\Users\Neeraj Mishra\Downloads\WhatsApp Image 2025-09-11 at 08.28.54.jpeg"alt="company logo">
+            </a>
+            <div class="nav-links" >
+                <ul class="flex">
+                    <li class="hover-link nav-item" id="ipl" onclick="onNavItemClick('cricket')"><u>CRICKET</u></li>
+                    <li class="hover-link nav-item" id="finance" onclick="onNavItemClick('finance')"><u>FINANACE</u></li>
+                    <li class="hover-link nav-item" id="politics" onclick="onNavItemClick('politics')"><u>POLITICS</u></li>
+                </ul>
+            </div>
+            <div class="search-bar flex">
+                <input id="search-text" type="text" class="news-input" placeholder="eg.ipl,Bollywood">
+                <button id="search-button" class="search-button">Search</button>
+            </div>
+        </div>
+    </nav>
+   
+
+
+
+
+    <main>
+        <div class="cards-container container flex" id="cards-container">
+           
+        </div>
+    </main>
+
+
+
+
+    <template id="template-news-card">
+        <div class="card">
+            <div class="card-header">
+                <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
+            </div>
+            <div class="card-content">
+                <h3 id="news-title">This is the Title</h3>
+                <h6 class="news-source" id="news-source">End Gadget 26/08/2023</h6>
+                <p class="news-desc" id="news-desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae saepe quis voluptatum quisquam vitae doloremque facilis molestias quae ratione cumque!</p>
+            </div>
+        </div>
+    </template>
+
+
+
+
+    <script>
+        const API_KEY = "3a46f517ef8048319d20012db6347842";
+     
+        const proxyUrl = "https://api.allorigins.win/raw?url=";
+        const url = "https://newsapi.org/v2/everything?q=";
+        const cardsContainer = document.getElementById("cards-container");
+        const newsCardTemplate = document.getElementById("template-news-card");
+        const searchButton = document.getElementById("search-button");
+        const searchText = document.getElementById("search-text");
+        let curSelectedNav = null;
+
+
+
+
+        window.addEventListener("load", () => fetchNews("India"));
+
+
+
+
+        function reload() {
+            window.location.reload();
+        }
+
+
+
+
+        async function fetchNews(query) {
+            try {
+                // Construct the full NewsAPI URL and encode it for the proxy.
+                const fullUrl = `${proxyUrl}${encodeURIComponent(`${url}${query}&apiKey=${API_KEY}`)}`;
+                const res = await fetch(fullUrl);
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    bindData(data.articles);
+                } else {
+                    console.error("API Error:", data.code, data.message);
+                    cardsContainer.innerHTML = `<p>Failed to fetch news. Reason: ${data.message}</p>`;
+                }
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                cardsContainer.innerHTML = `<p>An error occurred. Please check your network connection and API key.</p>`;
+            }
+        }
+
+
+
+
+        function bindData(articles) {
+            cardsContainer.innerHTML = "";
+            if (articles.length === 0) {
+                cardsContainer.innerHTML = "<p>No news articles found. Try a different search term.</p>";
+                return;
+            }
+
+
+
+
+            articles.forEach((article) => {
+                if (!article.urlToImage || article.urlToImage.includes("null")) return;
+
+
+
+
+                const cardClone = newsCardTemplate.content.cloneNode(true);
+                fillDataInCard(cardClone, article);
+                cardsContainer.appendChild(cardClone);
+            });
+        }
+
+
+
+
+        function fillDataInCard(cardClone, article) {
+            const newsImg = cardClone.querySelector("#news-img");
+            const newsTitle = cardClone.querySelector("#news-title");
+            const newsSource = cardClone.querySelector("#news-source");
+            const newsDesc = cardClone.querySelector("#news-desc");
+
+
+
+
+            newsImg.src = article.urlToImage;
+            newsTitle.innerHTML = article.title;
+            newsDesc.innerHTML = article.description;
+
+
+
+
+            const date = new Date(article.publishedAt).toLocaleString("en-US", {
+                timeZone: "Asia/Kolkata",
+            });
+
+
+
+
+            newsSource.innerHTML = `${article.source.name} · ${date}`;
+
+
+
+
+            cardClone.firstElementChild.addEventListener("click", () => {
+                window.open(article.url, "_blank");
+            });
+        }
+
+
+
+
+        function onNavItemClick(id) {
+            fetchNews(id);
+            const navItem = document.getElementById(id);
+            if (curSelectedNav) {
+                curSelectedNav.classList.remove("active");
+            }
+            curSelectedNav = navItem;
+            curSelectedNav.classList.add("active");
+        }
+
+
+
+
+        searchButton.addEventListener("click", () => {
+            const query = searchText.value;
+            if (!query) return;
+            fetchNews(query);
+            if (curSelectedNav) {
+                curSelectedNav.classList.remove("active");
+            }
+            curSelectedNav = null;
+        });
+
+
+
+
+        searchText.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+                searchButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
